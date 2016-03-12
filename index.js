@@ -7,7 +7,7 @@ var userTokens = new Datastore({filename: 'userTokens.db', autoload: true});
 
 userTokens.find({}, function(err, tokens) {
 	tokens.forEach(function(token) {
-		clients.push(new User(ConsumerKey.consumer_key, ConsumerKey.consumer_secret, tokens.access_token, tokens.access_token_secret));
+		clients.push(new User(ConsumerKey.consumer_key, ConsumerKey.consumer_secret, token.access_token, token.access_token_secret));
 	});
 });
 
