@@ -2,7 +2,7 @@ var Twit = require('twit');
 
 var regExpNandemoii = /(なん|何)でも(良|い)い/g;
 var regExpNandemosuru = /(なん|何)でも((する)|(します)|(やる)|(やります))/g;
-var regExpNandemonai = /(なん|何)でも((ない)|(ありません)|(ございませ)/g;
+var regExpNandemonai = /(なん|何)でも((ない)|(ありません)|(ございませ))/g;
 
 function User(consumerKey, consumerSecret, accessToken, accessTokenSecret) {
 	var client = new Twit({
