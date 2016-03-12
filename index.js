@@ -1,5 +1,5 @@
 var ConsumerKey = require('./ConsumerKey.json');
-var User = require('./User.js')(ConsumerKey.consumer_key, ConsumerKey.consumer_secret);
+var User = require('./User.js');
 var Datastore = require('nedb');
 
 var clients = [];
