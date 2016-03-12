@@ -2,7 +2,7 @@
   "name": "nandemoreply",
   "version": "1.0.0",
   "description": "ん？今なんでもするって言ったよね",
-  "main": "index.js",
+  "main": "nandemosuru.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
