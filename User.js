@@ -12,7 +12,8 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret) {
 	});
 	var stream = client.stream('user');
 	stream.on('tweet', function(tweet) {
-		if (/\?/g.test(tweet.text)) return;
+		if (/\?|？/g.test(tweet.text)) return;
+        if (/(い|言)ったよね/g.test(tweet.text)) return;
 		var messagePrefix = '@' + tweet.user.screen_name + ' ';
 		if (regExpNandemoii.test(tweet.text)) {
 			client.post('statuses/update', {
