@@ -24,7 +24,7 @@ var express = require('express'),
     OAuth = require('oauth').OAuth;
 
 var app = express();
-app.use(require('body-praser')());
+app.use(require('body-parser')());
 app.use(require('method-override')());
 app.use(require('cookie-parser')(ConsumerKey.consumer_key));
 app.use(require('express-session')());
