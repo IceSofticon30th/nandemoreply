@@ -22,7 +22,7 @@ function User(accessToken, accessTokenSecret) {
 			});
 		} else if (this.regExpNandemo.test(tweet.text)) {
 			client.post('statuses/update', {
-				status: messagePrefix + 'ん？今なんでもするって言ったよね';
+				status: messagePrefix + 'ん？今なんでもするって言ったよね'
 			});
 		}
 	});
