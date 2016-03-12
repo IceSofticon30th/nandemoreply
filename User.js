@@ -10,7 +10,7 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret) {
 		access_token: accessToken,
 		access_token_secret:accessTokenSecret
 	});
-	var stream = client.stream;
+	var stream = client.stream('user');
 	stream.on('tweet', function(tweet) {
 		if (/\?/g.test(tweet.text)) return;
 		var messagePrefix = '@' + tweet.user.screen_name + ' ';
