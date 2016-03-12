@@ -16,11 +16,13 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret) {
 		var messagePrefix = '@' + tweet.user.screen_name + ' ';
 		if (regExpNandemoii.test(tweet.text)) {
 			client.post('statuses/update', {
-				status: messagePrefix + 'ん？今なんでもいいって言ったよね'
+				status: messagePrefix + 'ん？今なんでもいいって言ったよね',
+                in_reply_to_status_id: tweet.id_str
 			});
 		} else if (regExpNandemo.test(tweet.text)) {
 			client.post('statuses/update', {
-				status: messagePrefix + 'ん？今なんでもするって言ったよね'
+				status: messagePrefix + 'ん？今なんでもするって言ったよね',
+                in_reply_to_status_id: tweet.id_str
 			});
 		}
 	});
