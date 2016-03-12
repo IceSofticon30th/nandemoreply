@@ -28,7 +28,6 @@ app.use(require('body-parser')());
 app.use(require('method-override')());
 app.use(require('cookie-parser')(ConsumerKey.consumer_key));
 app.use(require('express-session')());
-app.use(app.router);
 app.use(express.static(__dirname + '/public'));
 
 //aouth
