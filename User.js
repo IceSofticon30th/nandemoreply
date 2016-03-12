@@ -1,14 +1,12 @@
 var Twit = require('twit');
-var CONSUMER_KEY = null,
-	CONSUMER_SECRET = null;
 
 User.prototype.regExpNandemoii = /(なん|何)でも(良|い)い/g;
 User.prototype.regExpNandemo = /(なん|何)でも((?!かんでも)|(?!ない))/g;
 
-function User(accessToken, accessTokenSecret) {
+function User(consumerKey, consumerSecret, accessToken, accessTokenSecret) {
 	var client = new Twit({
-		consumer_key: CONSUMER_KEY,
-		consumer_secret: CONSUMER_SECRET,
+		consumer_key: consumerKey,
+		consumer_secret: consumerSecret,
 		access_token: accessToken,
 		access_token_secret:accessTokenSecret
 	});
@@ -28,8 +26,4 @@ function User(accessToken, accessTokenSecret) {
 	});
 }
 
-module.exports = function (consumerKey, consumerSecret) {
-	CONSUMER_KEY = consumerKey;
-	CONSUMER_SECRET = consumerSecret;
-	return User;
-};
+module.exports = User;
