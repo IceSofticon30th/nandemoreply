@@ -16,23 +16,22 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret) {
 		if (/\?|？/g.test(tweet.text)) return;
         if (/(い|言)ったよね/g.test(tweet.text)) return;
         
-        var match = false;
-        var message = '@' + tweet.user.screen_name + ' ';
-        
-		if (regExpNandemoii.test(tweet.text)) {
-            message += 'ん？今なんでもいいって言ったよね'; 
-		} else if (regExpNandemosuru.test(tweet.text)) {
-            message += 'ん？今なんでもするって言ったよね';
-		} else if (regExpNandemonai.test(tweet.text)) {
-            message += 'ん？今なんでもないって言ったよね';
-		}
-        
-        if (match) {
+        function reply(message) {
+            var messagePrefix = '@' + tweet.user.screen_name + ' ';
 			client.post('statuses/update', {
-				status: message,
+				status: messagePrefix + message,
                 in_reply_to_status_id: tweet.id_str
 			});
         }
+        
+		if (regExpNandemoii.test(tweet.text)) {
+            reply('ん？今なんでもいいって言ったよね');
+		} else if (regExpNandemosuru.test(tweet.text)) {
+            reply('ん？今なんでもするって言ったよね');
+		} else if (regExpNandemonai.test(tweet.text)) {
+            reply('ん？今なんでもないって言ったよね');
+		}
+        
 	});
 }
 
