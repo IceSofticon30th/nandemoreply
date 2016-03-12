@@ -1,0 +1,28 @@
+{
+  "name": "nandemoreply",
+  "version": "1.0.0",
+  "description": "ん？今なんでもするって言ったよね",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IceSofticon30th/nandemoreply.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IceSofticon30th/nandemoreply/issues"
+  },
+  "homepage": "https://github.com/IceSofticon30th/nandemoreply#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "method-override": "^2.3.5",
+    "nedb": "^1.8.0",
+    "twit": "^2.2.3"
+  }
+}
