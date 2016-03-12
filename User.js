@@ -2,8 +2,8 @@ var Twit = require('twit');
 var CONSUMER_KEY = null,
 	CONSUMER_SECRET = null;
 
-UserStream.prototype.regExpNandemoii = /(なん|何)でも(良|い)い/g;
-UserStream.prototype.regExpNandemo = /(なん|何)でも((?!かんでも)|(?!ない))/g;
+User.prototype.regExpNandemoii = /(なん|何)でも(良|い)い/g;
+User.prototype.regExpNandemo = /(なん|何)でも((?!かんでも)|(?!ない))/g;
 
 function User(accessToken, accessTokenSecret) {
 	var client = new Twit({
