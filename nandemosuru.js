@@ -56,6 +56,10 @@ function addUser(token) {
         console.log(screen_name, user_id);
     });
     
+    client.on('error', function (error) {
+        console.log(error);
+    });
+    
 }
 
 userTokens.find({}, function(err, tokens) {

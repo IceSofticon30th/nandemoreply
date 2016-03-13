@@ -25,6 +25,10 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret, scree
     stream.on('disconnect', function (message) {
         self.emit('disconnect', message, screenName, userId);
     });
+    
+    stream.on('error', function (error) {
+        self.emit('erorr', error);
+    });
 }
 
 User.prototype = Object.create(EventEmitter.prototype);
