@@ -1,20 +1,27 @@
 var Twit = require('twit');
 var EventEmitter = require('events').EventEmitter;
+var util = require('util');
+
+util.inherits(Twit, EventEmitter);
+var c = Twit.prototype.constructor;
+Twit.prototype.constructor = function () {
+    EventEmitter.call(this);
+    c.apply(this, Array.prototype.slice.call(this, arguments));
+}
+util.inherits(User, Twit);
 
 function User(consumerKey, consumerSecret, accessToken, accessTokenSecret, screenName, userId) {
-    EventEmitter.call(this);
     var self = this;
-    
-	var client = new Twit({
+    var auth = {
 		consumer_key: consumerKey,
 		consumer_secret: consumerSecret,
 		access_token: accessToken,
 		access_token_secret:accessTokenSecret
-	});
+	};
     
-    try {
+    Twit.call(this, auth);
     
-	var stream = client.stream('user');
+	var stream = this.stream('user');
     
 	stream.on('tweet', function (tweet) {
         self.emit('tweet', tweet);
@@ -29,14 +36,9 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret, scree
     });
     
     stream.on('error', function (error) {
-        self.emit('erorr', error);
+        self.emit('error', error);
     });
-    
-    } catch(e) {
-        console.log(e);
-    }
 }
 
-User.prototype = Object.create(EventEmitter.prototype);
 
 module.exports = User;
