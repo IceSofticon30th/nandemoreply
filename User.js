@@ -14,6 +14,7 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret) {
 	});
 	var stream = client.stream('user');
 	stream.on('tweet', function(tweet) {
+        if (tweet.retweeted_status) return;
 		if (/\?|？/g.test(tweet.text)) return;
         if (/(い|言)ったよね/g.test(tweet.text)) return;
         
