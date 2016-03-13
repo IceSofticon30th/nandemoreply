@@ -5,6 +5,10 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret, scree
     EventEmitter.call(this);
     var self = this;
     
+    this.on('error', function (error) {
+        console.log(error);
+    });
+    
 	var client = new Twit({
 		consumer_key: consumerKey,
 		consumer_secret: consumerSecret,
