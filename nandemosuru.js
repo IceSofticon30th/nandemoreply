@@ -5,21 +5,82 @@ var Datastore = require('nedb');
 var clients = [];
 var userTokens = new Datastore({filename: 'userTokens.db', autoload: true});
 
+var regExpNandemoii = /(なん|何)でも(良|い)い/g;
+var regExpNandemosuru = /(なん|何)でも((する)|(します)|(しよう)|(やる)|(やろう)|(やります))/g;
+var regExpNandemonai = /(なん|何)でも((\)ない)|(）ない)|(ない)|(ありません)|(ございませ))/g;
+var regExpNandemojikkyou = /なん[JjＪｊ]/g;
+
+function addUser(token) {
+    var client = new User(
+            ConsumerKey.consumer_key,
+            ConsumerKey.consumer_secret,
+            token.access_token,
+            token.access_token_secret,
+            token.screen_name,
+            token.user_id );
+    clients.push(client);
+    
+    client.on('tweet', function(tweet) {
+        if (tweet.retweeted_status) return;
+        if (/\?|？/g.test(tweet.text)) return;
+        if (/(い|言)ったよね/g.test(tweet.text)) return;
+        
+        function reply(message) {
+            var messagePrefix = '@' + tweet.user.screen_name + ' ';
+            client.post('statuses/update', {
+                status: messagePrefix + message,
+                in_reply_to_status_id: tweet.id_str
+            });
+        }
+        
+        if (regExpNandemoii.test(tweet.text)) {
+            reply('ん？今なんでもいいって言ったよね');
+        } else if (regExpNandemosuru.test(tweet.text)) {
+            reply('ん？今なんでもするって言ったよね');
+        } else if (regExpNandemonai.test(tweet.text)) {
+            reply('ん？今なんでもないって言ったよね');
+        } else if (regExpNandemojikkyou.test(tweet.text)) {
+            reply('ん？今なんでも実況するって言ったよね');
+        }
+        
+    });
+    
+    client.on('disconnect', function(disconnect, screen_name, user_id) {
+        if (disconnect.disconnect.code === 6) {
+            userTokens.remove({user_id: user_id});
+            clients.slice(clients.indexOf(client), 1);
+        }
+    });
+    
+    client.on('connected', function (screen_name, user_id) {
+        console.log(screen_name, user_id);
+    });
+    
+}
+
 userTokens.find({}, function(err, tokens) {
 	tokens.forEach(function(token, i) {
         setTimeout(function () {
-		    clients.push(new User(ConsumerKey.consumer_key, ConsumerKey.consumer_secret, token.access_token, token.access_token_secret));
+            addUser(token);
         }, i * 1000);
 	});
 });
 
-function registerUser(token, secret) {
+function registerUser(name, id, token, secret) {
 	var auth = {
+        screen_name: name,
+        user_id: id,
 		access_token: token,
 		access_token_secret: secret
 	};
-
-	userTokens.update({access_token: token}, auth, {upsert: true});
+    userTokens.findOne({access_token: token}, function (err, doc) {
+        if (doc) {
+            userTokens.update({access_token: token}, auth, {});
+        } else {
+            user.Tokens.insert(auth);
+            addUser(auth);
+        }
+    });
 }
 
 var express = require('express'),
@@ -71,7 +132,7 @@ app.get('/callback', function(req, res, next){
         req.session.oauth.access_token = oauth_access_token;
         req.session.oauth.access_token_secret = oauth_access_token_secret;
 
-		registerUser(oauth_access_token, oauth_access_token_secret);
+		registerUser(results.screen_name, results.user_id, oauth_access_token, oauth_access_token_secret);
 
 		res.end("worked. nice one.");
       }
