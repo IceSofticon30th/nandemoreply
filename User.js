@@ -5,16 +5,14 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret, scree
     EventEmitter.call(this);
     var self = this;
     
-    this.on('error', function (error) {
-        console.log(error);
-    });
-    
 	var client = new Twit({
 		consumer_key: consumerKey,
 		consumer_secret: consumerSecret,
 		access_token: accessToken,
 		access_token_secret:accessTokenSecret
 	});
+    
+    try {
     
 	var stream = client.stream('user');
     
@@ -33,6 +31,10 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret, scree
     stream.on('error', function (error) {
         self.emit('erorr', error);
     });
+    
+    } catch(e) {
+        console.log(e);
+    }
 }
 
 User.prototype = Object.create(EventEmitter.prototype);
