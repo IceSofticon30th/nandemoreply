@@ -7,7 +7,7 @@ var userTokens = new Datastore({filename: 'userTokens.db', autoload: true});
 
 var regExpNandemoii = /(なん|何)でも(良|い)い/g;
 var regExpNandemosuru = /(なん|何)でも((する)|(します)|(しよう)|(やる)|(やろう)|(やります))/g;
-var regExpNandemonai = /(なん|何)でも((\)ない)|(）ない)|(ない)|(ありません)|(ございませ))/g;
+var regExpNandemonai = /(なん|何)でも((\)ない)|(なかっ)|(）ない)|(ない)|(ありません)|(ございませ))/g;
 var regExpNandemojikkyou = /なん[JjＪｊ]/g;
 
 function addUser(token) {
