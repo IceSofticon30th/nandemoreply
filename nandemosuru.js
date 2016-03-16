@@ -48,7 +48,7 @@ function addUser(token) {
     client.on('disconnect', function(disconnect, screen_name, user_id) {
         if (disconnect.disconnect.code === 6) {
             userTokens.remove({user_id: user_id});
-            clients.slice(clients.indexOf(client), 1);
+            clients.splice(clients.indexOf(client), 1);
         }
     });
     
