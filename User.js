@@ -10,7 +10,7 @@ Twit.prototype.constructor = function () {
 }
 util.inherits(User, Twit);
 
-function User(consumerKey, consumerSecret, accessToken, accessTokenSecret, screenName, userId) {
+function User(consumerKey, consumerSecret, accessToken, accessTokenSecret, screenName, userId, stream) {
     var self = this;
     var auth = {
 		consumer_key: consumerKey,
@@ -20,6 +20,8 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret, scree
 	};
     
     Twit.call(this, auth);
+    
+    if (!stream) return this;
     
 	var stream = this.stream('user');
     

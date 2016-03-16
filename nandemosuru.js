@@ -17,7 +17,8 @@ function mainUser(token) {
             token.access_token,
             token.access_token_secret,
             token.screen_name,
-            token.user_id );
+            token.user_id,
+            true );
     
     main.on('tweet', function(tweet) {
         if (tweet.retweeted_status) return;
@@ -27,7 +28,7 @@ function mainUser(token) {
         function reply(message) {
             var messagePrefix = '@' + tweet.user.screen_name + ' ';
             
-            function recursiveReply(num) {
+            (function recursiveReply(num) {
                 if (!num) num = 0;
                 if (num >= clients.length) return;
                 var client = clients[num];
@@ -37,10 +38,10 @@ function mainUser(token) {
                 }, function (err, data, response) {
                     if (!err) {
                         num++;
-                        recursiveReply(num);
+                        arguments.callee(num);
                     }
                 });
-            }
+            }());
         }
         
         if (regExpNandemoii.test(tweet.text)) {
