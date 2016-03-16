@@ -10,27 +10,37 @@ var regExpNandemosuru = /(なん|何)でも((する)|(します)|(しよう)|(�
 var regExpNandemonai = /(なん|何)でも((\)ない)|(なかっ)|(）ない)|(ない)|(ありません)|(ございませ))/g;
 var regExpNandemojikkyou = /なん[JjＪｊ]/g;
 
-function addUser(token) {
-    var client = new User(
+function mainUser(token) {
+    var main = new User(
             ConsumerKey.consumer_key,
             ConsumerKey.consumer_secret,
             token.access_token,
             token.access_token_secret,
             token.screen_name,
             token.user_id );
-    clients.push(client);
     
-    client.on('tweet', function(tweet) {
+    main.on('tweet', function(tweet) {
         if (tweet.retweeted_status) return;
         if (/\?|？/g.test(tweet.text)) return;
         if (/(い|言)ったよね/g.test(tweet.text)) return;
         
         function reply(message) {
             var messagePrefix = '@' + tweet.user.screen_name + ' ';
-            client.post('statuses/update', {
-                status: messagePrefix + message,
-                in_reply_to_status_id: tweet.id_str
-            });
+            
+            function recursiveReply(num) {
+                if (!num) num = 0;
+                if (num >= clients.length) return;
+                var client = clients[num];
+                client.post('statuses/update', {
+                    status: messagePrefix + message,
+                    in_reply_to_status_id: tweet.id_str
+                }, function (err, data, response) {
+                    if (!err) {
+                        num++;
+                        recursiveReply(num);
+                    }
+                });
+            }
         }
         
         if (regExpNandemoii.test(tweet.text)) {
@@ -45,10 +55,33 @@ function addUser(token) {
         
     });
     
+    main.on('disconnect', function(disconnect, screen_name, user_id) {
+        console.log(disconnect, screen_name, user_id);
+    });
+    
+    main.on('connected', function (screen_name, user_id) {
+        console.log(screen_name, user_id);
+    });
+    
+    main.on('error', function (error) {
+        console.log(error);
+    });
+}
+
+function addUser(token) {
+    var client = new User(
+            ConsumerKey.consumer_key,
+            ConsumerKey.consumer_secret,
+            token.access_token,
+            token.access_token_secret,
+            token.screen_name,
+            token.user_id );
+    clients.push(client);
+    
     client.on('disconnect', function(disconnect, screen_name, user_id) {
         if (disconnect.disconnect.code === 6) {
             userTokens.remove({user_id: user_id});
-            clients.slice(clients.indexOf(client), 1);
+            clients.splice(clients.indexOf(client), 1);
         }
     });
     
@@ -65,7 +98,11 @@ function addUser(token) {
 userTokens.find({}, function(err, tokens) {
 	tokens.forEach(function(token, i) {
         setTimeout(function () {
-            addUser(token);
+            if (token.user_id == 2274093522) {
+                mainUser(token);
+            } else {
+                addUser(token);
+            }
         }, i * 1000);
 	});
 });
