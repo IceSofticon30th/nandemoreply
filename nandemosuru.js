@@ -39,6 +39,8 @@ function mainUser(token) {
                     if (!err) {
                         num++;
                         arguments.callee(num);
+                    } else {
+                        console.log(err);
                     }
                 });
             }());
