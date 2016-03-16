@@ -29,6 +29,7 @@ function mainUser(token) {
             var messagePrefix = '@' + tweet.user.screen_name + ' ';
             
             (function recursiveReply(num) {
+                console.log(num, clients);
                 if (!num) num = 0;
                 if (num >= clients.length) return;
                 var client = clients[num];
@@ -79,18 +80,8 @@ function addUser(token) {
             token.access_token_secret,
             token.screen_name,
             token.user_id );
+    
     clients.push(client);
-    
-    client.on('disconnect', function(disconnect, screen_name, user_id) {
-        if (disconnect.disconnect.code === 6) {
-            userTokens.remove({user_id: user_id});
-            clients.splice(clients.indexOf(client), 1);
-        }
-    });
-    
-    client.on('connected', function (screen_name, user_id) {
-        console.log(screen_name, user_id);
-    });
     
     client.on('error', function (error) {
         console.log(error);
@@ -100,13 +91,11 @@ function addUser(token) {
 
 userTokens.find({}, function(err, tokens) {
 	tokens.forEach(function(token, i) {
-        setTimeout(function () {
-            if (token.user_id == 2274093522) {
-                mainUser(token);
-            } else {
-                addUser(token);
-            }
-        }, i * 1000);
+        if (token.user_id == 2274093522) {
+            mainUser(token);
+        } else {
+            addUser(token);
+        }
 	});
 });
 
