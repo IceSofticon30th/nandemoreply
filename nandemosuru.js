@@ -81,7 +81,7 @@ function registerUser(name, id, token, secret) {
         if (doc) {
             userTokens.update({access_token: token}, auth, {});
         } else {
-            user.Tokens.insert(auth);
+            userTokens.insert(auth);
             addUser(auth);
         }
     });
