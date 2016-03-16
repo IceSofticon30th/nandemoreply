@@ -29,7 +29,7 @@ function mainUser(token) {
             var messagePrefix = '@' + tweet.user.screen_name + ' ';
             
             (function recursiveReply(num) {
-                console.log(num, clients);
+                var rep = arguments.callee;
                 if (!num) num = 0;
                 if (num >= clients.length) return;
                 var client = clients[num];
@@ -39,7 +39,7 @@ function mainUser(token) {
                 }, function (err, data, response) {
                     if (!err) {
                         num++;
-                        arguments.callee(num);
+                        rep(num);
                     } else {
                         console.log(err);
                     }
