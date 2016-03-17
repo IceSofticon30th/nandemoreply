@@ -38,7 +38,7 @@ function User(consumerKey, consumerSecret, accessToken, accessTokenSecret, scree
     });
     
     stream.on('error', function (error) {
-        self.emit('error', error);
+        console.error(error);
     });
 }
 

@@ -66,10 +66,6 @@ function mainUser(token) {
     main.on('connected', function (screen_name, user_id) {
         console.log(screen_name, user_id);
     });
-    
-    main.on('error', function (error) {
-        console.log(error);
-    });
 }
 
 function addUser(token) {
@@ -82,10 +78,6 @@ function addUser(token) {
             token.user_id );
     
     clients.push(client);
-    
-    client.on('error', function (error) {
-        console.log(error);
-    });
     
 }
 
